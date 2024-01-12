@@ -76,6 +76,6 @@
 "decorators": {
     "load": [
       "SELECT uuid AS host_uuid FROM system_info;"
-    ],
+    ]
   }
 }
