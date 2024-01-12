@@ -1,0 +1,4 @@
+--config_plugin=filesystem
+--disable_events=false
+--audit_allow_config=true
+--audit_allow_process_events=true
