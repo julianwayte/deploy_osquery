@@ -1,4 +1,5 @@
 import platform
+import subprocess 
 
 # determine platform (Linux/Windows)
 platform = str(platform.platform())
