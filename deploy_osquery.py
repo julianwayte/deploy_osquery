@@ -16,13 +16,14 @@ if "Linux" in platform:
     if "Ubuntu" in unameOutput:    
         downloadCommand = "curl -O https://pkg.osquerypackages.com/deb/osquery_5.10.2-1.linux_amd64.deb"
         installCommand = "sudo dpkg -i osquery_5.10.2-1.linux_amd64.deb"
-        confPath = "/etc/osquery/osquery.conf"
-        flagPath = "/etc/osquery/osquery.flags"
+        confSourcePath = "osquery.conf.deb"
+        confTargetPath = "/etc/osquery/osquery.conf"
+        flagTargetPath = "/etc/osquery/osquery.flags"
     elif "RHEL" in unameOutput or "amzn" in unameOutput:
         downloadCommand = "curl -O https://pkg.osquerypackages.com/rpm/osquery-5.10.2-1.linux.x86_64.rpm"
         installCommand = "sudo rpm -i osquery-5.10.2-1.linux.x86_64.rpm"
-        confPath = "/etc/osquery/osquery.conf"
-        flagPath = "/etc/osquery/osquery.flags"
+        confSourcePath = "osquery.conf.rpm"
+        flagSourcePath = "/etc/osquery/osquery.flags"
     # add handling for CentOS, AmznLinux, Debian
 
 elif "Windows" in platform:
@@ -64,7 +65,7 @@ except:
 # copy the osquery conf file 
 try:
     print("Copying osquery conf file...")
-    process = subprocess.Popen("sudo cp ./osquery.conf.linux "+confPath, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    process = subprocess.Popen("sudo cp ./"+confSourcePath+" "+confTargetPath, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     output = process.communicate()[0]
     process.wait()
     exitCode = process.returncode
