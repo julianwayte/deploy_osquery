@@ -59,11 +59,11 @@
       "query": "SELECT * FROM startup_items;",
       "interval": 180
     },
-    "bpf_process_events": {
+    "process_events": {
       "query": "SELECT * FROM process_events;",
       "interval": 60
     },
-    "bpf_socket_events": {
+    "socket_events": {
       "query": "SELECT * FROM socket_events;",
       "interval": 60
     },
