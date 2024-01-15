@@ -31,28 +31,48 @@ if "Linux" in platform:
     rpm_os_list = ['el7', 'el8', 'el9', 'amzn', 'centos']
     rpm_os = [os for os in rpm_os_list if(os in unameOutput)]
 
+    # define a list of strings for OS's that use the .deb osquery package
+    deb_os_list = ['debian', 'ubuntu']
+    deb_os = [os for os in deb_os_list if(os in unameOutput)]
+            
     # define common linux paths
     confTargetPath = "/etc/osquery/osquery.conf"
     flagTargetPath = "/etc/osquery/osquery.flags"
 
-    # Ubuntu/Debian
-    if "Ubuntu" in unameOutput:    
+    # Ubuntu/Debian x86 
+    if bool(deb_os) and "x86_64" in unameOutput:
         downloadCommand = "curl -O https://pkg.osquerypackages.com/deb/osquery_5.10.2-1.linux_amd64.deb"
         installCommand = "sudo dpkg -i osquery_5.10.2-1.linux_amd64.deb"
         confSourcePath = "osquery.conf.deb"
 
-    # RHEL/CentOS/AmznLinux
-    elif bool(rpm_os):
+    # Ubuntu/Debian ARM
+    elif bool(deb_os) and "aarch64" in unameOutput:    
+        downloadCommand = "curl -O https://pkg.osquerypackages.com/deb/osquery_5.10.2-1.linux_arm64.deb"
+        installCommand = "sudo dpkg -i osquery_5.10.2-1.linux_arm64.deb"
+        confSourcePath = "osquery.conf.deb"
+
+    # RHEL/CentOS/AmznLinux x86
+    elif bool(rpm_os) and "x86_64" in unameOutput:
         downloadCommand = "curl -O https://pkg.osquerypackages.com/rpm/osquery-5.10.2-1.linux.x86_64.rpm"
         installCommand = "sudo rpm -i osquery-5.10.2-1.linux.x86_64.rpm"
         confSourcePath = "osquery.conf.rpm"
+
+    # RHEL/CentOS/AmznLinux ARM
+    elif bool(rpm_os) and "aarch64" in unameOutput:
+        downloadCommand = "curl -O https://pkg.osquerypackages.com/rpm/osquery-5.10.2-1.linux.aarch64.rpm"
+        installCommand = "sudo rpm -i osquery-5.10.2-1.linux.aarch64.rpm"
+        confSourcePath = "osquery.conf.rpm"
+
+    else: 
+        print("Operating system / architecture combination not supported")  
+        exit(1)
 
 elif "Windows" in platform:
     downloadCommand = "curl -O https://pkg.osquerypackages.com/windows/osquery-5.10.2.msi"
     installCommand = "msiexec /i .\osquery-5.10.2.msi /quiet /qn /norestart /log .\install.log"
     confSourcePath = "osquery.conf.windows"
     confTargetPath = "C:\Program Files\osquery\osquery.conf"
-    flagiTargetPath = "C:\Program Files\osquery\osquery.flags"
+    flagTargetPath = "C:\Program Files\osquery\osquery.flags"
 
 else:
     print("Platform not supported") 
@@ -113,7 +133,6 @@ try:
     output = str(process.communicate()[0])
     process.wait()
     exitCode = process.returncode
-    print(output)
 except:
     print("An error occurred while trying to start osquery")
     print("Command: sudo systemctl start osqueryd")
