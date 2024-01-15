@@ -5,21 +5,6 @@ import subprocess
 platform = str(platform.platform())
 print('Platform: ', platform)
 
-# Only tested with the following OS/architecture combinations:
-# Ubuntu     64bit x86
-# Amzn Linux 64bit ARM
-
-# Should remove events and retest
-# RHEL       64bit x86
-# Amzn Linux 64bit x86
-# CentOS     64bit x86
-
-# Add 
-# Debian     64bit x86 
-# Windows    64bit x86
-# RHEL       64bit ARM
-
-
 if "Linux" in platform:
     # if Linux then determine RHEL/CentOS vs Ubuntu/Debian via the uname command 
     process = subprocess.Popen("uname -a", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -32,7 +17,7 @@ if "Linux" in platform:
     rpm_os = [os for os in rpm_os_list if(os in unameOutput)]
 
     # define a list of strings for OS's that use the .deb osquery package
-    deb_os_list = ['debian', 'ubuntu']
+    deb_os_list = ['Debian', 'ubuntu']
     deb_os = [os for os in deb_os_list if(os in unameOutput)]
             
     # define common linux paths
