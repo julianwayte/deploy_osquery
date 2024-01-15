@@ -5,7 +5,20 @@ import subprocess
 platform = str(platform.platform())
 print('Platform: ', platform)
 
-# only support x86 architecture now, could add ARM support in future
+# Only tested with the following OS/architecture combinations:
+# Ubuntu     64bit x86
+# Amzn Linux 64bit ARM
+
+# Should remove events and retest
+# RHEL       64bit x86
+# Amzn Linux 64bit x86
+# CentOS     64bit x86
+
+# Add 
+# Debian     64bit x86 
+# Windows    64bit x86
+# RHEL       64bit ARM
+
 
 if "Linux" in platform:
     # if Linux then determine RHEL/CentOS vs Ubuntu/Debian via the uname command 
