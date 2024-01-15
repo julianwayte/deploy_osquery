@@ -2,5 +2,6 @@
 --disable_events=false
 --disable_audit=false
 --audit_allow_config=true
+--audit_persist=false
 --audit_allow_process_events=true
 --audit_allow_sockets=true
