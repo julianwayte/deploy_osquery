@@ -15,31 +15,31 @@ if "Linux" in platform:
     exitCode = process.returncode
 
     # define a list of strings for RPM flavor operating system
-    os_list = ['el7', 'el8', 'el9', 'amzn', 'centos']
-    rpm_os = [os for os in os_list if(os in unameOutput)]
+    rpm_os_list = ['el7', 'el8', 'el9', 'amzn', 'centos']
+    rpm_os = [os for os in rpm_os_list if(os in unameOutput)]
+
+    # define common linux paths
+    confTargetPath = "/etc/osquery/osquery.conf"
+    flagTargetPath = "/etc/osquery/osquery.flags"
 
     # Ubuntu/Debian
     if "Ubuntu" in unameOutput:    
         downloadCommand = "curl -O https://pkg.osquerypackages.com/deb/osquery_5.10.2-1.linux_amd64.deb"
         installCommand = "sudo dpkg -i osquery_5.10.2-1.linux_amd64.deb"
         confSourcePath = "osquery.conf.deb"
-        confTargetPath = "/etc/osquery/osquery.conf"
-        flagTargetPath = "/etc/osquery/osquery.flags"
 
     # RHEL/CentOS/AmznLinux
     elif bool(rpm_os):
         downloadCommand = "curl -O https://pkg.osquerypackages.com/rpm/osquery-5.10.2-1.linux.x86_64.rpm"
         installCommand = "sudo rpm -i osquery-5.10.2-1.linux.x86_64.rpm"
         confSourcePath = "osquery.conf.rpm"
-        flagSourcePath = "/etc/osquery/osquery.flags"
-    # add handling for CentOS, AmznLinux, Debian
 
 elif "Windows" in platform:
     downloadCommand = "curl -O https://pkg.osquerypackages.com/windows/osquery-5.10.2.msi"
     installCommand = "msiexec /i .\osquery-5.10.2.msi /quiet /qn /norestart /log .\install.log"
     confSourcePath = "osquery.conf.windows"
     confTargetPath = "C:\Program Files\osquery\osquery.conf"
-    flagPath = "C:\Program Files\osquery\osquery.flags"
+    flagiTargetPath = "C:\Program Files\osquery\osquery.flags"
 
 else:
     print("Platform not supported") 
@@ -85,7 +85,7 @@ except:
 # copy the osquery flags file 
 try:
     print("Copying osquery flags file...")
-    process = subprocess.Popen("sudo cp ./osquery.flags "+flagiTargetPath, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    process = subprocess.Popen("sudo cp ./osquery.flags "+flagTargetPath, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     output = process.communicate()[0]
     process.wait()
     exitCode = process.returncode
