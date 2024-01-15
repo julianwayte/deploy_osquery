@@ -13,13 +13,21 @@ if "Linux" in platform:
     unameOutput = str(process.communicate()[0])
     process.wait()
     exitCode = process.returncode
+
+    # define a list of strings for RPM flavor operating system
+    os_list = ['el7', 'el8', 'el9', 'amzn', 'centos']
+    rpm_os = [os for os in os_list if(os in unameOutput)]
+
+    # Ubuntu/Debian
     if "Ubuntu" in unameOutput:    
         downloadCommand = "curl -O https://pkg.osquerypackages.com/deb/osquery_5.10.2-1.linux_amd64.deb"
         installCommand = "sudo dpkg -i osquery_5.10.2-1.linux_amd64.deb"
         confSourcePath = "osquery.conf.deb"
         confTargetPath = "/etc/osquery/osquery.conf"
         flagTargetPath = "/etc/osquery/osquery.flags"
-    elif "RHEL" in unameOutput or "amzn" in unameOutput:
+
+    # RHEL/CentOS/AmznLinux
+    elif bool(rpm_os):
         downloadCommand = "curl -O https://pkg.osquerypackages.com/rpm/osquery-5.10.2-1.linux.x86_64.rpm"
         installCommand = "sudo rpm -i osquery-5.10.2-1.linux.x86_64.rpm"
         confSourcePath = "osquery.conf.rpm"
@@ -29,7 +37,8 @@ if "Linux" in platform:
 elif "Windows" in platform:
     downloadCommand = "curl -O https://pkg.osquerypackages.com/windows/osquery-5.10.2.msi"
     installCommand = "msiexec /i .\osquery-5.10.2.msi /quiet /qn /norestart /log .\install.log"
-    confPath = "C:\Program Files\osquery\osquery.conf"
+    confSourcePath = "osquery.conf.windows"
+    confTargetPath = "C:\Program Files\osquery\osquery.conf"
     flagPath = "C:\Program Files\osquery\osquery.flags"
 
 else:
@@ -70,18 +79,18 @@ try:
     process.wait()
     exitCode = process.returncode
 except:
-    print("An error occurred while copying the osquery.conf file to "+confPath)
+    print("An error occurred while copying the osquery.conf file to "+confTargetPath)
     exit(1)
 
 # copy the osquery flags file 
 try:
     print("Copying osquery flags file...")
-    process = subprocess.Popen("sudo cp ./osquery.flags "+flagPath, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    process = subprocess.Popen("sudo cp ./osquery.flags "+flagiTargetPath, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     output = process.communicate()[0]
     process.wait()
     exitCode = process.returncode
 except:
-    print("An error occurred while copying the osquery.flags file to "+flagPath)
+    print("An error occurred while copying the osquery.flags file to "+flagTargetPath)
     exit(1)
 
 # start the osquery daemon 
@@ -96,4 +105,3 @@ except:
     print("An error occurred while trying to start osquery")
     print("Command: sudo systemctl start osqueryd")
     exit(1)
-
