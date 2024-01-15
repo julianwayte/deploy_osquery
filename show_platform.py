@@ -10,5 +10,5 @@ process = subprocess.Popen("uname -a", shell=True, stdout=subprocess.PIPE, stder
 unameOutput = str(process.communicate()[0])
 process.wait()
 exitCode = process.returncode
-print(unameOutput)
+print('uname output: ',str(unameOutput))
 
