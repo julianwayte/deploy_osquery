@@ -17,7 +17,7 @@ if "Linux" in platform:
     rpm_os = [os for os in rpm_os_list if(os in unameOutput)]
 
     # define a list of strings for OS's that use the .deb osquery package
-    deb_os_list = ['Debian', 'ubuntu']
+    deb_os_list = ['Debian', 'Ubuntu']
     deb_os = [os for os in deb_os_list if(os in unameOutput)]
             
     # define common linux paths
