@@ -1,7 +1,6 @@
 {
   "options": {
     "host_identifier": "hostname",
-    "logger_path": "/var/log/osquery",
     "disable_logging": "false",
     "schedule_splay_percent": 10
   },
@@ -59,12 +58,12 @@
       "query": "SELECT * FROM startup_items;",
       "interval": 180
     },
-    "process_events": {
-      "query": "SELECT * FROM process_events;",
+    "bpf_process_events": {
+      "query": "SELECT * FROM bpf_process_events;",
       "interval": 60
     },
-    "socket_events": {
-      "query": "SELECT * FROM socket_events;",
+    "bpf_socket_events": {
+      "query": "SELECT * FROM bpf_socket_events;",
       "interval": 60
     },
     "osquery_flags": {
