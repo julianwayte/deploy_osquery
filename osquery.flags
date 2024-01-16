@@ -1,7 +1,7 @@
 --config_plugin=filesystem
+--logger_plugin=kafka_producer
+--logger_kafka_brokers=ip-172-31-22-39.us-west-2.compute.internal
+--logger_kafka_topic=osqueryTopic
+--logger_kafka_acks=1
 --disable_events=false
---disable_audit=false
---audit_allow_config=true
---audit_persist=false
---audit_allow_process_events=true
---audit_allow_sockets=true
+--enable_bpf_events=true
