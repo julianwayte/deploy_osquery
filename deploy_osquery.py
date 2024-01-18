@@ -76,18 +76,28 @@ except:
     print("Command: ", downloadCommand)
     exit(1)
 
-# install the osquery agent 
-try:
-    print("Installing osquery...")
-    process = subprocess.Popen(installCommand, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    installOutput = str(process.communicate()[0])
-    process.wait()
-    installExitCode = process.returncode
-    print(installOutput)
-except: 
-    print("An error occurred while trying to install osquery")
-    print("Command: ", installCommand)
-    exit(1)
+# first check if the osquery agent is installed
+process = subprocess.Popen("osqueryd", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+output = str(process.communicate()[0])
+process.wait()
+if "osqueryd: not found" in output:
+    # install the osquery agent 
+    try:
+        print("Installing osquery...")
+        process = subprocess.Popen(installCommand, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        installOutput = str(process.communicate()[0])
+        process.wait()
+        installExitCode = process.returncode
+        print(installOutput)
+    except: 
+        print("An error occurred while trying to install osquery")
+        print("Command: ", installCommand)
+        exit(1)
+else:
+    print("osquery already installed")
+    # stop the daemon as we start it later after copying the config
+    stopProcess = subprocess.Popen("sudo systemctl stop osqueryd", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    stopProcess.wait()
 
 # copy the osquery conf file 
 try:
