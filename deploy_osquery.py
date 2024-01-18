@@ -63,7 +63,8 @@ else:
     print("Platform not supported") 
     exit(1)
 
-# download the osquery agent
+# download the osquery agent 
+# in future could add logic to download latest version, and uninstall old version before installing new 
 try:
     print("Downloading osquery...")
     process = subprocess.Popen(downloadCommand, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -76,7 +77,7 @@ except:
     print("Command: ", downloadCommand)
     exit(1)
 
-# first check if the osquery agent is installed
+# before installing osquery, first check if it is installed by running osqueryd
 process = subprocess.Popen("osqueryd", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 output = str(process.communicate()[0])
 process.wait()
@@ -93,8 +94,10 @@ if "osqueryd: not found" in output:
         print("An error occurred while trying to install osquery")
         print("Command: ", installCommand)
         exit(1)
+
+# osquery is already installed
 else:
-    print("osquery already installed")
+    print("Osquery already installed, stopping service...")
     # stop the daemon as we start it later after copying the config
     stopProcess = subprocess.Popen("sudo systemctl stop osqueryd", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     stopProcess.wait()
