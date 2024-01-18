@@ -6,10 +6,6 @@
   },
 
   "schedule": {
-    "processes": {
-      "query": "SELECT * FROM processes;",
-      "interval": 60
-    },
     "acpi_tables": {
       "query": "SELECT * FROM acpi_tables;",
       "interval": 3600
@@ -50,6 +46,18 @@
       "query": "SELECT * FROM interface_addresses;",
       "interval": 720
     },
+    "kernel_info": {
+      "query": "SELECT * FROM kernel_info;",
+      "interval": 60
+    },
+    "kernel_modules": {
+      "query": "SELECT * FROM kernel_modules;",
+      "interval": 60
+    },
+    "processes": {
+      "query": "SELECT * FROM processes;",
+      "interval": 60
+    },
     "process_open_sockets": {
       "query": "SELECT * FROM process_open_sockets;",
       "interval": 180
@@ -76,5 +84,13 @@
     "load": [
       "SELECT uuid AS host_uuid FROM system_info;"
     ]
+  },
+
+ "packs": {
+    "osquery-monitoring": "/opt/osquery/share/osquery/packs/osquery-monitoring.conf",
+    "incident-response": "/opt/osquery/share/osquery/packs/incident-response.conf",
+    "it-compliance": "/opt/osquery/share/osquery/packs/it-compliance.conf",
+    "ossec-rootkit": "/opt/osquery/share/osquery/packs/ossec-rootkit.conf"
   }
+
 }
